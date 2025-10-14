@@ -23,7 +23,6 @@
         "aarch64-linux" = [
           "x86_64-unknown-linux-gnu"
           "x86_64-unknown-linux-musl"
-          "x86_64-unknown-linux-musl"
         ];
         "x86_64-linux" = [
           "aarch64-unknown-linux-gnu"
