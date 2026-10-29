@@ -73,9 +73,9 @@
         devShells = {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
-              llvm_18
-              llvmPackages_18.clang-unwrapped
-              llvmPackages_18.lld
+              llvm_22
+              llvmPackages_22.clang-unwrapped
+              llvmPackages_22.lld
             ];
           };
         }
