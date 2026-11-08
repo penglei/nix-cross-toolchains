@@ -65,7 +65,13 @@
       };
 
       mkCrossSystemShells =
-        system: builtins.mapAttrs (_: pkgs: pkgs.mkShell (opensslEnv system)) (mkCrossSystemPkgs system);
+        system:
+        let
+          nativePkgs = nixpkgs.legacyPackages.${system};
+        in
+        builtins.mapAttrs (
+          _: pkgs: pkgs.mkShell ((opensslEnv system) // { packages = [ nativePkgs.ccache ]; })
+        ) (mkCrossSystemPkgs system);
 
     in
 
