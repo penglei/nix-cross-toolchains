@@ -59,8 +59,13 @@
         in
         allCrossPkgs;
 
+      opensslEnv = system: {
+        OPENSSL_INC = "${nixpkgs.legacyPackages.${system}.openssl.dev}/include";
+        OPENSSL_LIB = "${nixpkgs.legacyPackages.${system}.openssl.out}/lib";
+      };
+
       mkCrossSystemShells =
-        system: builtins.mapAttrs (_: pkgs: pkgs.mkShell { }) (mkCrossSystemPkgs system);
+        system: builtins.mapAttrs (_: pkgs: pkgs.mkShell (opensslEnv system)) (mkCrossSystemPkgs system);
 
     in
 
@@ -71,13 +76,16 @@
       in
       {
         devShells = {
-          default = pkgs.mkShell {
-            buildInputs = with pkgs; [
-              llvm_22
-              llvmPackages_22.clang-unwrapped
-              llvmPackages_22.lld
-            ];
-          };
+          default = pkgs.mkShell (
+            {
+              buildInputs = with pkgs; [
+                llvm_22
+                llvmPackages_22.clang-unwrapped
+                llvmPackages_22.lld
+              ];
+            }
+            // opensslEnv system
+          );
         }
         // mkCrossSystemShells system;
       }
